@@ -60,6 +60,9 @@ Console.WriteLine($"Largest square edge length: {rightUpperCorner.EdgeLength}, s
     $"{Environment.NewLine}" +
     $"X: {rightUpperCorner.X}, Y: {rightUpperCorner.Y}");
 
+Console.WriteLine("Write something to exit...");
+Console.ReadKey();
+
 class SquarePointer
 {
     public int X { get; set; }
