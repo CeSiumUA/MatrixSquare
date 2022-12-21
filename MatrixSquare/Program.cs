@@ -1,5 +1,5 @@
-﻿int columns = 10;
-int rows = 10;
+﻿int columns = 40;
+int rows = 40;
 
 bool[,] matrix = new bool[rows, columns];
 
@@ -7,7 +7,7 @@ int[,] mapMatrix = new int[rows + 1, columns + 1];
 
 var random = new Random();
 
-var rightUpperCorner = new SquarePointer();
+var rightBottomCorner = new SquarePointer();
 
 for (int i = 0; i < rows; i++)
 {
@@ -15,30 +15,29 @@ for (int i = 0; i < rows; i++)
     {
         var val = random.Next(0, 2);
         matrix[i, j] = val == 1;
-        mapMatrix[i, j] = val;
     }
 }
 
-for(int i = 0; i < rows; i++)
+for(int i = 1; i <= rows; i++)
 {
-    for(int j = 0; j < columns; j++)
+    for(int j = 1; j <= columns; j++)
     {
-        if (matrix[i, j])
+        if (matrix[i - 1, j - 1])
         {
-            var min = new int[] { mapMatrix[i + 1, j + 1], mapMatrix[i, j + 1], mapMatrix[i + 1, j] }.Min();
+            var min = new int[] { mapMatrix[i - 1, j - 1], mapMatrix[i, j - 1], mapMatrix[i - 1, j] }.Min();
             mapMatrix[i, j] = min + 1;
-            if (mapMatrix[i, j] > rightUpperCorner.EdgeLength)
+            if (mapMatrix[i, j] > rightBottomCorner.EdgeLength)
             {
-                rightUpperCorner.EdgeLength = mapMatrix[i, j];
-                rightUpperCorner.X = i;
-                rightUpperCorner.Y = j;
+                rightBottomCorner.EdgeLength = mapMatrix[i, j];
+                rightBottomCorner.X = i;
+                rightBottomCorner.Y = j;
             }
         }
     }
 }
 
-var xRange = Enumerable.Range(rightUpperCorner.X, rightUpperCorner.EdgeLength);
-var yRange = Enumerable.Range(rightUpperCorner.Y, rightUpperCorner.EdgeLength);
+var xRange = Enumerable.Range(rightBottomCorner.X - rightBottomCorner.EdgeLength, rightBottomCorner.EdgeLength);
+var yRange = Enumerable.Range(rightBottomCorner.Y - rightBottomCorner.EdgeLength, rightBottomCorner.EdgeLength);
 
 for (int i = 0; i < rows; i++)
 {
@@ -56,9 +55,9 @@ for (int i = 0; i < rows; i++)
     Console.WriteLine();
 }
 
-Console.WriteLine($"Largest square edge length: {rightUpperCorner.EdgeLength}, square: {rightUpperCorner.EdgeLength * rightUpperCorner.EdgeLength}" +
+Console.WriteLine($"Largest square edge length: {rightBottomCorner.EdgeLength}, square: {rightBottomCorner.EdgeLength * rightBottomCorner.EdgeLength}" +
     $"{Environment.NewLine}" +
-    $"X: {rightUpperCorner.X}, Y: {rightUpperCorner.Y}");
+    $"X: {rightBottomCorner.X}, Y: {rightBottomCorner.Y}");
 
 Console.WriteLine("Write something to exit...");
 Console.ReadKey();
